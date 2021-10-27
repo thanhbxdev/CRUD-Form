@@ -18,6 +18,14 @@ function ListPage() {
         }
         fetchData()
     }, [])
+    const deletePrd = async (id, name) => {
+        const result = window.confirm(`delete ${name}`)
+        if (result) {
+            await ProductAPI.remove(id)
+            setProducts(products.filter((item) => item.id !== id))
+        }
+    }
+
     return (
         <div className="App">
             {loading ? (<div>Loading</div>) : ('')}
@@ -30,13 +38,16 @@ function ListPage() {
                 </tr>
                 </thead>
                 <tbody>
-                {products?.map((item,index)=>{
-                    return(
+                {products?.map((item, index) => {
+                    return (
                         <tr key={item.id}>
-                            <th>{index+=1}</th>
+                            <th>{index += 1}</th>
                             <td>{item.name}</td>
                             <td>
-                                <button className="btn btn-danger">
+                                <button
+                                    className="btn btn-danger"
+                                    onClick={() => deletePrd(item.id, item.name)}
+                                >
                                     Delete
                                 </button>
                                 <a className="btn btn-success" href={`/edit/${item.id}`}>
